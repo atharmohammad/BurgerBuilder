@@ -1,0 +1,15 @@
+.Contact{
+  text-align: center;
+  margin: 20px auto;
+  width: 80%;
+  border: 1px solid #ccc;
+  background-color: white;
+  box-sizing: border-box;
+
+}
+
+@media (min-width=600px) {
+  .Contact{
+    width:500px
+  }
+}
