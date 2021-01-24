@@ -4,6 +4,8 @@ import classes from './Contact.module.css';
 import axios from '../../../../axios-order'
 import Spinner from '../../../UI/Spinner/Spinner';
 import Input from '../../../UI/Input/Input';
+import {connect} from 'react-redux';
+
 class Contact extends Component{
   state={
     orderform:{
@@ -15,9 +17,12 @@ class Contact extends Component{
           },
           valid:false,
           validation:{
-            required:false
+            required:false,
+            maxLength:150,
+            minLength:4
           },
-          value:''
+          touched:false,
+          value:'',
         },
 
         address:{
@@ -26,11 +31,15 @@ class Contact extends Component{
             type:'text',
             placeholder:'Destination Adress'
           },
-          value:'',
           valid:false,
           validation:{
-            required:false
-          }
+            required:false,
+            maxLength:450,
+            minLength:5
+          },
+          touched:false,
+          value:'',
+
         },
 
         country:{
@@ -39,11 +48,14 @@ class Contact extends Component{
             type:'text',
             placeholder:'Country'
           },
-          value:'',
           valid:false,
           validation:{
-            required:false
-          }
+            required:false,
+            maxLength:150,
+            minLength:2
+          },
+          touched:false,
+          value:'',
         },
 
         email:{
@@ -52,24 +64,32 @@ class Contact extends Component{
             type:'text',
             placeholder:'Your Email'
           },
-          value:'',
           valid:false,
           validation:{
-            required:false
-          }
+            required:false,
+            maxLength:150,
+            minLength:8
+          },
+          touched:false,
+          value:'',
+
         },
 
         Phone:{
           elementType:'input',
           elementConfig:{
             type:'text',
-            placeholder:'Contact Number'
+            placeholder:'Contact Number',
           },
-          value:'',
           valid:false,
           validation:{
-            required:false
-          }
+            required:false,
+            maxLength:12,
+            minLength:10
+          },
+          touched:false,
+          value:'',
+
         },
 
         deliveryMode:{
@@ -80,11 +100,13 @@ class Contact extends Component{
               {value:'normal', displayValue:'Normal'},
             ]
            },
-          value:''
+          value:'fastest',
+          valid:true,
+          validation:{},
         }
-
       },
-    Loading:false
+    Loading:false,
+    invalidform:true
   }
 
   placeOrderHandler=(event)=>{
@@ -121,14 +143,14 @@ class Contact extends Component{
   checkValidity=(value,rules)=>{
     let isvalid = true;
     if(rules.required){
-      isvalid = value.trim() !== '';
+      isvalid = (value!== '');
     }
     if(rules.minLength){
-      isvalid = value.length >= rules.minLength;
+      isvalid = (value.length < rules.minLength)?false:isvalid;
     }
 
     if(rules.maxLength){
-      isvalid = value.length <= rules.maxLength
+      isvalid = (value.length > rules.maxLength)?false:isvalid;
     }
 
     return isvalid;
@@ -140,11 +162,22 @@ class Contact extends Component{
     const formElements = {...updatedForm[inputIdentifier]};
     formElements.value = event.target.value;
     formElements.valid = this.checkValidity(formElements.value,formElements.validation);
+    formElements.touched = true;
     updatedForm[inputIdentifier] = formElements;
+
+    let invalidform = false;
+    for(let key in updatedForm){
+      invalidform = updatedForm[key].valid==false?true:invalidform;
+    }
+
     this.setState({
-      orderform:updatedForm
+      orderform:updatedForm,
+      invalidform:invalidform
     });
+
   }
+
+
 
   render(){
 
@@ -166,16 +199,17 @@ class Contact extends Component{
                 <Input
                   key={f.id}
                   changed={(event)=>{this.inputChangedHandler(event,f.id)}}
-                 elementType={f.config.elementType}
-                 elementConfig={f.config.elementConfig}
-                 value={f.config.value}
-                 shouldValidate={f.config.validation}
-                 Invalid={!f.config.valid}
+                   elementType={f.config.elementType}
+                   elementConfig={f.config.elementConfig}
+                   value={f.config.value}
+                   touched={f.config.touched}
+                   shouldValidate={f.config.validation}
+                   Invalid={!f.config.valid}
                  />
               );
             })
           }
-          <Button  Type='Success' clicked={this.placeOrderHandler} >ORDER</Button>
+          <Button Disabled={this.state.invalidform} Type='Success' clicked={this.placeOrderHandler} >ORDER</Button>
         </form>
 
       );
@@ -190,4 +224,13 @@ class Contact extends Component{
 
 }
 
-export default Contact;
+const mapStatetoProps = state=>{
+  return(
+    {
+      ingredients : state.ingredients,
+      price : state.price
+    }
+  );
+}
+
+export default connect(mapStatetoProps)(Contact);
