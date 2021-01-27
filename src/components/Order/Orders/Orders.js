@@ -19,7 +19,7 @@ class Orders extends Component{
               ...res.data[key],
               id:key
             });
-          // console.log(fetched_order);
+          console.log(fetched_order);
         };
         this.setState({
           orders:fetched_order,
@@ -38,8 +38,12 @@ class Orders extends Component{
     if(!this.state.Loading){
       orders = this.state.orders.map(val=>{
         return(
-            <Order key={val.id} ingredients={val.ingredients}
-                    name={val.Name} address={val.address} price={val.price} />
+            <Order key={val.id} ingredients={val.Ingredients}
+                    name={val.orderData.name}
+                    address={val.orderData.address}
+                     price={val.price}
+                      country={val.orderData.country} Phone={val.orderData.Phone}
+                       delivery={val.orderData.deliveryMode} />
         );
       });
     }

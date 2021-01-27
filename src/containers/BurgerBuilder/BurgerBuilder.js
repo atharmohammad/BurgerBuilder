@@ -8,8 +8,7 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler'
 import Aux from '../../hoc/Auxillary'
 import {connect} from 'react-redux'
-import * as actionType from '../../store/action';
-
+import * as actionCreator from '../../store/index'
 
 const index ={
   'salad' : 0,
@@ -33,13 +32,11 @@ class BurgerBuilder extends PureComponent{
     //   {value:'bacon',count:0},
     //   {value:'meat',count:0},
     // ]
-    show:true,
     order:false,
     // Loading:false,
-    error:false
   }
 
-  // componentDidMount(){
+  componentDidMount(){
   //   axios.get('https://burger-builder-react-92bac-default-rtdb.firebaseio.com/ingredients.json')
   //       .then(response=>{
   //         this.setState({ingredients:response.data});
@@ -49,7 +46,8 @@ class BurgerBuilder extends PureComponent{
   //           error:true
   //         });
   //       });
-  // }
+      this.props.InitIngredients();
+  }
 
   // AddIngredients = (type)=>{
   //   const obj = [
@@ -149,7 +147,7 @@ class BurgerBuilder extends PureComponent{
 
 
     let ordersummary = null;
-    let burger = this.state.error ? <p>Something Went Wrong ! Please Try Again After Sometime ! </p> : <Spinner />;
+    let burger = this.props.error ? <p>Something Went Wrong ! Please Try Again After Sometime ! </p> : <Spinner />;
 
     if(this.props.ingredients.length > 0){
       burger = (
@@ -172,9 +170,9 @@ class BurgerBuilder extends PureComponent{
         );
     }
 
-    if(this.state.Loading){
-      ordersummary = <Spinner />;
-    }
+    // if(this.state.Loading){
+    //   ordersummary = <Spinner />;
+    // }
 
     return (
       <div>
@@ -192,14 +190,16 @@ const mapStatetoProps=state=>{
   return {
     ingredients : state.ingredients,
     price:state.price,
-    show:state.show
+    show:state.show,
+    error:state.error
   }
 };
 
 const mapDispatchtoProps=dispatch=>{
   return{
-    AddIngredients:(type)=>dispatch({type:actionType.ADDINGREDIENT,ingredientName:type}),
-    removeIngredients:(type)=>dispatch({type:actionType.REMOVEINGREDIENT,ingredientName:type})
+    AddIngredients:(type)=>dispatch(actionCreator.addIngredients(type)),
+    removeIngredients:(type)=>dispatch(actionCreator.removeIngredients(type)),
+    InitIngredients:()=>dispatch(actionCreator.initIngredients())
   }
 }
 

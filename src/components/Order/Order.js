@@ -10,15 +10,19 @@ const order = (props)=>{
 
   return(
     <div className={classes.Order}>
-      <p><strong>Name : {props.name} </strong></p>
-      <p><strong>Address : {props.address.street} {props.address.pincode}</strong></p>
+      <p><strong>Name</strong> : {props.name} </p>
+      <p><strong>Address </strong>: {props.address}</p>
+      <p><strong>Country</strong> : {props.country}</p>
+      <p><strong>Delivery</strong> : {props.delivery}</p>
+
       <h3>Ingredients :</h3>
         <ul>
           {ingredients}
         </ul>
         <div className={classes.price}>
-          Price : <strong>₹ {props.price}</strong>
+        <strong>  Price : </strong>₹ {props.price}
         </div>
+        <p><strong>Contact</strong> : {props.Phone}</p>
     </div>
   );
 }

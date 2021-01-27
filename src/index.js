@@ -4,10 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import ingredientReducer from './store/Reducers/ingredients';
+import {createStore,applyMiddleware,compose} from 'redux';
+import burgerBuilderReducer from './store/Reducers/BurgerBuilder';
+import thunk from 'redux-thunk'
 //Create Store here
-const store = createStore(ingredientReducer)
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(burgerBuilderReducer
+  ,composeEnhancers(applyMiddleware(thunk)));
 
 
 ReactDOM.render(

@@ -5,10 +5,10 @@
   box-shadow: 1px 1px 1px black;
   background-color: white;
   box-sizing: border-box;
+  font-size: 12px;
 }
 
 .price{
-  font-size: 18px;
   margin: 23px;
 }
 
@@ -17,5 +17,6 @@
   display: inline-block;
   margin:0 8px ;
   border:1px solid #ccc;
-  padding: 5px
+  padding: 5px;
+  font-size: 12px;
 }
