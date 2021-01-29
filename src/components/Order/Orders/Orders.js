@@ -3,40 +3,30 @@ import Order from '../Order';
 import axios from '../../../axios-order.js'
 import Spinner from '../../UI/Spinner/Spinner'
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
+import {connect} from 'react-redux';
+import * as actionCreator from '../../../store/index'
+import {Redirect} from 'react-router-dom'
+
 class Orders extends Component{
-  state={
-    Loading:true,
-    orders:[]
-  }
 
   componentDidMount=()=>{
-    axios.get('/orders.json')
-      .then(res=>{
-        // console.log(res.data);
-        const fetched_order = [];
-        for(let key in res.data){
-            fetched_order.push({
-              ...res.data[key],
-              id:key
-            });
-          console.log(fetched_order);
-        };
-        this.setState({
-          orders:fetched_order,
-          Loading:false
-        });
-      })
-      .catch(err=>{
-        this.setState({Loading:false});
-      })
+    this.props.FetchOrders(this.props.token);
   }
 
   render(){
 
     let orders = <Spinner/>
 
-    if(!this.state.Loading){
-      orders = this.state.orders.map(val=>{
+    if(this.props.token == null){
+      return(<Redirect to='/authentication'/>);
+    }
+
+    if(this.props.error){
+      orders = <p>There is Something Wrong !Try Again Later</p>;
+    }
+
+    if(!this.props.Loading){
+      orders = this.props.orders.map(val=>{
         return(
             <Order key={val.id} ingredients={val.Ingredients}
                     name={val.orderData.name}
@@ -57,4 +47,19 @@ class Orders extends Component{
   }
 }
 
-export default withErrorHandler(Orders,axios);
+const mapStateToProps = (state)=>{
+  return{
+    orders:state.ord.orders,
+    error:state.ord.error,
+    Loading:state.ord.Loading,
+    token:state.auth.token
+  }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+  return{
+    FetchOrders : (token)=>dispatch(actionCreator.fetchOrder(token))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(withErrorHandler(Orders,axios));

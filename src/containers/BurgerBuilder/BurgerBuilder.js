@@ -105,9 +105,15 @@ class BurgerBuilder extends PureComponent{
   // }
 
   showbill = ()=>{
-    this.setState({
-      order:true
-    });
+    if(this.props.token){
+      this.setState({
+        order:true
+      });
+    }
+    else{
+      this.props.setAuthPath('/checkout');
+      this.props.history.push('/authentication');
+    }
   }
 
   cancelBill = ()=>{
@@ -158,7 +164,8 @@ class BurgerBuilder extends PureComponent{
             Disabledinfo = {disabledinfo}
             cost={this.props.price}
             order={!this.props.show}
-            bill={this.showbill}/>
+            bill={this.showbill}
+            token={this.props.token}/>
           </Aux>
         );
 
@@ -188,10 +195,11 @@ class BurgerBuilder extends PureComponent{
 
 const mapStatetoProps=state=>{
   return {
-    ingredients : state.ingredients,
-    price:state.price,
-    show:state.show,
-    error:state.error
+    ingredients : state.ing.ingredients,
+    price:state.ing.price,
+    show:state.ing.show,
+    error:state.ing.error,
+    token:state.auth.token
   }
 };
 
@@ -199,7 +207,8 @@ const mapDispatchtoProps=dispatch=>{
   return{
     AddIngredients:(type)=>dispatch(actionCreator.addIngredients(type)),
     removeIngredients:(type)=>dispatch(actionCreator.removeIngredients(type)),
-    InitIngredients:()=>dispatch(actionCreator.initIngredients())
+    InitIngredients:()=>dispatch(actionCreator.initIngredients()),
+    setAuthPath:(path)=>dispatch(actionCreator.setAuthPath(path))
   }
 }
 

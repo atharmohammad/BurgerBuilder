@@ -125,7 +125,7 @@ class Contact extends Component{
         orderData:orderData
       };
 
-      axios.post('/orders.json',order)
+      axios.post('/orders.json?auth='+this.props.token,order)
         .then(response=>{
           this.setState({
             Loading:false,
@@ -227,8 +227,9 @@ class Contact extends Component{
 const mapStatetoProps = state=>{
   return(
     {
-      ingredients : state.ingredients,
-      price : state.price
+      ingredients : state.ing.ingredients,
+      price : state.ing.price,
+      token:state.auth.token
     }
   );
 }
