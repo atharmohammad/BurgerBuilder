@@ -103,7 +103,8 @@ class Contact extends Component{
           value:'fastest',
           valid:true,
           validation:{},
-        }
+        },
+
       },
     Loading:false,
     invalidform:true
@@ -122,7 +123,8 @@ class Contact extends Component{
       const order = {
         Ingredients : this.props.ingredients,
         price: this.props.price,
-        orderData:orderData
+        orderData:orderData,
+        userId:this.props.userId
       };
 
       axios.post('/orders.json?auth='+this.props.token,order)
@@ -229,7 +231,8 @@ const mapStatetoProps = state=>{
     {
       ingredients : state.ing.ingredients,
       price : state.ing.price,
-      token:state.auth.token
+      token:state.auth.token,
+      userId:state.auth.userId
     }
   );
 }

@@ -10,7 +10,7 @@ import {Redirect} from 'react-router-dom'
 class Orders extends Component{
 
   componentDidMount=()=>{
-    this.props.FetchOrders(this.props.token);
+    this.props.FetchOrders(this.props.token,this.props.userId);
   }
 
   render(){
@@ -52,13 +52,14 @@ const mapStateToProps = (state)=>{
     orders:state.ord.orders,
     error:state.ord.error,
     Loading:state.ord.Loading,
-    token:state.auth.token
+    token:state.auth.token,
+    userId:state.auth.userId
   }
 }
 
 const mapDispatchToProps = (dispatch)=>{
   return{
-    FetchOrders : (token)=>dispatch(actionCreator.fetchOrder(token))
+    FetchOrders : (token,userId)=>dispatch(actionCreator.fetchOrder(token,userId))
   }
 }
 

@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import Layout from './components/Layout/Layout.js'
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder.js'
-import {BrowserRouter,Route,withRouter} from 'react-router-dom'
+import {BrowserRouter,Route,Switch,withRouter,Redirect} from 'react-router-dom'
 import Checkout from './components/Order/Checkout/Checkout'
 import Orders from './components/Order/Orders/Orders'
 import Auth from './containers/Auth/Auth'
@@ -16,15 +16,32 @@ class App extends Component {
   }
 
   render(){
+
+    let routes = (
+      <Switch>
+        <Route path='/authentication' component={Auth} />
+        <Route exact path='/' component={BurgerBuilder}/>
+        <Redirect to='/'/>
+      </Switch>
+    )
+
+    if(this.props.token){
+      routes = (
+          <Switch>
+          <Route path='/checkout' component={Checkout}/>
+          <Route path='/orders' component={Orders} />
+          <Route path='/authentication' component={Auth} />
+          <Route path='/logout' component={Logout} />
+          <Route exact path='/' component={BurgerBuilder}/>
+          <Redirect to='/'/>
+        </Switch>
+      )
+    }
     return(
       <BrowserRouter>
         <Layout>
           <div>
-            <Route exact path='/' component={BurgerBuilder}/>
-            <Route path='/checkout' component={Checkout}/>
-            <Route path='/orders' component={Orders} />
-            <Route path='/authentication' component={Auth} />
-            <Route path='/logout' component={Logout} />
+            {routes}
           </div>
         </Layout>
       </BrowserRouter>
@@ -32,10 +49,16 @@ class App extends Component {
   }
 };
 
+const mapStateToProps = state =>{
+  return{
+    token : state.auth.token
+  }
+}
+
 const mapDispatchToProps = dispatch =>{
   return{
     persistentAuthenticating : ()=>dispatch(actionCreator.persistentAuthenticating())
   }
 }
 
-export default (connect(null,mapDispatchToProps)(App));
+export default (connect(mapStateToProps,mapDispatchToProps)(App));
