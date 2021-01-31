@@ -5,6 +5,7 @@ import axios from '../../../../axios-order'
 import Spinner from '../../../UI/Spinner/Spinner';
 import Input from '../../../UI/Input/Input';
 import {connect} from 'react-redux';
+import {checkValidity} from '../../../../shared/validation';
 
 class Contact extends Component{
   state={
@@ -62,7 +63,7 @@ class Contact extends Component{
           elementType:'input',
           elementConfig:{
             type:'text',
-            placeholder:'Your Email'
+            placeholder:'Your Email',
           },
           valid:false,
           validation:{
@@ -71,7 +72,8 @@ class Contact extends Component{
             minLength:8
           },
           touched:false,
-          value:'',
+          value:this.props.email,
+          name:'email'
 
         },
 
@@ -139,37 +141,23 @@ class Contact extends Component{
           });
         });
 
-        this.props.history.replace('/');
+        if(!this.state.Loading)
+          this.props.history.replace('/');
   }
 
-  checkValidity=(value,rules)=>{
-    let isvalid = true;
-    if(rules.required){
-      isvalid = (value!== '');
-    }
-    if(rules.minLength){
-      isvalid = (value.length < rules.minLength)?false:isvalid;
-    }
 
-    if(rules.maxLength){
-      isvalid = (value.length > rules.maxLength)?false:isvalid;
-    }
-
-    return isvalid;
-
-  }
 
   inputChangedHandler=(event,inputIdentifier)=>{
     const updatedForm = {...this.state.orderform};
     const formElements = {...updatedForm[inputIdentifier]};
     formElements.value = event.target.value;
-    formElements.valid = this.checkValidity(formElements.value,formElements.validation);
+    formElements.valid = checkValidity(formElements.value,formElements.validation);
     formElements.touched = true;
     updatedForm[inputIdentifier] = formElements;
 
     let invalidform = false;
     for(let key in updatedForm){
-      invalidform = updatedForm[key].valid==false?true:invalidform;
+      invalidform = updatedForm[key].valid===false?true:invalidform;
     }
 
     this.setState({
@@ -232,7 +220,8 @@ const mapStatetoProps = state=>{
       ingredients : state.ing.ingredients,
       price : state.ing.price,
       token:state.auth.token,
-      userId:state.auth.userId
+      userId:state.auth.userId,
+      email:state.auth.email,
     }
   );
 }

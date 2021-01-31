@@ -2,15 +2,14 @@ import React from 'react';
 import classes from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 import {connect} from 'react-redux';
-import {Redirect} from 'react-router';
 
 const navigationItems = (props) => {
     let auth = <NavigationItem link='/authentication'>Authenticate</NavigationItem>
     let orders = null;
     if(props.token){
-      auth = (<div>
+      auth = (
                 <NavigationItem link='/logout'>Logout</NavigationItem>
-              </div>
+
             );
       orders=(
         <NavigationItem link='/orders'>Orders</NavigationItem>

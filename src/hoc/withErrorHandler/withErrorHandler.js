@@ -10,7 +10,10 @@ const withErrorHandler = (WrappedComponent , axios)=>{
     constructor(props){
       super(props);
 
-      //
+        this.state={
+          error:null
+        };
+
       // this.reqinterceptor = axios.interceptors.request.use(req=>{
       //   return req;
       // });
@@ -20,9 +23,6 @@ const withErrorHandler = (WrappedComponent , axios)=>{
       //   this.temp = error;
       // });
 
-      this.state={
-        error:null
-      };
     }
 
     componentWillMount(){

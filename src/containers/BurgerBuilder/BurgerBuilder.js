@@ -10,19 +10,19 @@ import Aux from '../../hoc/Auxillary'
 import {connect} from 'react-redux'
 import * as actionCreator from '../../store/index'
 
-const index ={
-  'salad' : 0,
-  'cheese': 1,
-  'bacon' : 2,
-  'meat'  : 3
-};
-
-const prices = {
-  'salad' : 5,
-  'cheese': 10,
-  'bacon' : 15,
-  'meat'  : 25
-}
+// const index ={
+//   'salad' : 0,
+//   'cheese': 1,
+//   'bacon' : 2,
+//   'meat'  : 3
+// };
+//
+// const prices = {
+//   'salad' : 5,
+//   'cheese': 10,
+//   'bacon' : 15,
+//   'meat'  : 25
+// }
 
 class BurgerBuilder extends PureComponent{
   state = {
