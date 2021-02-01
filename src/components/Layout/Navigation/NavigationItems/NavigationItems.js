@@ -3,7 +3,7 @@ import classes from './NavigationItems.module.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 import {connect} from 'react-redux';
 
-const navigationItems = (props) => {
+export const NavigationItems = (props) => {
     let auth = <NavigationItem link='/authentication'>Authenticate</NavigationItem>
     let orders = null;
     if(props.token){
@@ -31,4 +31,4 @@ const mapStateToProps = (state)=>{
   }
 }
 
-export default connect(mapStateToProps)(navigationItems);
+export default connect(mapStateToProps)(NavigationItems);

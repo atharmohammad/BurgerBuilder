@@ -24,7 +24,7 @@ import * as actionCreator from '../../store/index'
 //   'meat'  : 25
 // }
 
-class BurgerBuilder extends PureComponent{
+export class BurgerBuilder extends PureComponent{
   state = {
     // ingredients:[
     //   {value:'salad',count:0},
