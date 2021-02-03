@@ -24,3 +24,11 @@ yarn-error.log*
 
 #API Files
 /src/API
+
+#build
+/build
+
+# firebase
+/.firebase
+/firebase.json
+/.firebaserc

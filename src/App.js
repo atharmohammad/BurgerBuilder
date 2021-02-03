@@ -44,7 +44,7 @@ class App extends Component {
       )
     }
     return(
-      <BrowserRouter>
+      <BrowserRouter basename='/burger'>
         <Layout>
           <div>
             {routes}
